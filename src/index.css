@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.App {
+  @apply flex;
+  @apply justify-center;
+}
