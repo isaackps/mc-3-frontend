@@ -1,26 +1,58 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { endpointApiUrl } from "../../utils";
 
 const initialState = {
-  companyDetails: [],
+  allCompanies: [],
   status: "idle",
+  registerCompanyStatus: "idle",
+  registerCompanyErrorMsg: "",
+  deletingCompanyStatus: "idle",
+  deletingCompanyErrorMsg: "",
+  whichCompanyCodeToDelete: 0,
 };
 
 export const getAllCompanies = createAsyncThunk(
   "company/getAllCompanies",
   async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/api/v1.0/market/company/getall`
-    );
-    console.log(response);
+    const response = await axios.get(`${endpointApiUrl}company/getall`);
     return response.data;
+  }
+);
+
+export const registerCompany = createAsyncThunk(
+  "company/registerCompany",
+  async (companyDetail, { rejectWithValue }) => {
+    try {
+      await axios.post(`${endpointApiUrl}company/register`, companyDetail);
+    } catch (err) {
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
+export const deleteCompany = createAsyncThunk(
+  "company/deleteCompany",
+  async (companyCode, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${endpointApiUrl}company/delete/${companyCode}`);
+    } catch (err) {
+      return rejectWithValue(err.response.data.message);
+    } finally {
+      const response = await axios.get(`${endpointApiUrl}company/getall`);
+      return response.data;
+    }
   }
 );
 
 export const companySlice = createSlice({
   name: "company",
   initialState,
-  reducers: {},
+  reducers: {
+    updateDeletingCompanyCode: (state, action) => {
+      state.whichCompanyCodeToDelete = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllCompanies.pending, (state) => {
@@ -28,11 +60,41 @@ export const companySlice = createSlice({
       })
       .addCase(getAllCompanies.fulfilled, (state, action) => {
         state.status = "idle";
-        state.companyDetails = action.payload;
+        state.allCompanies = action.payload;
+      })
+      .addCase(registerCompany.pending, (state) => {
+        state.registerCompanyStatus = "loading";
+      })
+      .addCase(registerCompany.rejected, (state, action) => {
+        state.registerCompanyStatus = "error";
+        state.registerCompanyErrorMsg = action.payload;
+      })
+      .addCase(registerCompany.fulfilled, (state) => {
+        state.registerCompanyStatus = "idle";
+      })
+      .addCase(deleteCompany.pending, (state) => {
+        state.deletingCompanyStatus = "loading";
+      })
+      .addCase(deleteCompany.fulfilled, (state, action) => {
+        state.deletingCompanyStatus = "idle";
+        state.allCompanies = action.payload;
+        state.whichCompanyCodeToDelete = 0;
+      })
+      .addCase(deleteCompany.rejected, (state, action) => {
+        state.deletingCompanyStatus = "error";
+        state.deletingCompanyErrorMsg = action.payload;
+        state.whichCompanyCodeToDelete = 0;
       });
   },
 });
 
-export const selectCompany = (state) => state.company.companyDetails;
+export const { updateDeletingCompanyCode } = companySlice.actions;
+
+export const allCompanyDetails = (state) => state.companies.allCompanies;
+
+export const status = (state) => state.companies.status;
+
+export const getDeletingCompanyCode = (state) =>
+  state.companies.whichCompanyCodeToDelete;
 
 export default companySlice.reducer;

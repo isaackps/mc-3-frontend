@@ -1,9 +1,15 @@
 import logo from "../../logo.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllCompanies } from "../../reducers/companyReducer";
+import { openModal, showContent } from "../../reducers/modalReducer";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
+  const openAddCompanyModal = () => {
+    dispatch(openModal());
+    dispatch(showContent("addCompanyModal"));
+  };
+
   return (
     <div className="navbar bg-base-100 flex">
       <div className="flex-none">
@@ -11,7 +17,12 @@ export const Navbar = () => {
       </div>
       <div className="flex-1">
         <div className="flex justify-around w-full items-center">
-          <button className="btn btn-primary">add company</button>
+          <button
+            className="btn btn-primary"
+            onClick={() => openAddCompanyModal()}
+          >
+            add company
+          </button>
           <button
             className="btn btn-primary"
             onClick={() => dispatch(getAllCompanies())}
