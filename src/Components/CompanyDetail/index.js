@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import {
   allCompanyDetails,
+  getSearchValue,
   status,
   updateDeletingCompanyCode,
 } from "../../reducers/companyReducer";
@@ -11,6 +12,7 @@ export const CompanyDetail = () => {
   const dispatch = useDispatch();
   const companies = useSelector(allCompanyDetails);
   const APIstatus = useSelector(status);
+  const searchValue = useSelector(getSearchValue);
 
   const openDeleteCompanyModal = (companyDetail) => {
     dispatch(updateDeletingCompanyCode(companyDetail.companyCode));
@@ -18,13 +20,28 @@ export const CompanyDetail = () => {
     dispatch(showContent("deleteCompanyModal"));
   };
 
+  const filteredCompanies = companies.filter((company) => {
+    if (searchValue.length < 3) return true;
+
+    const matchCompanyName = company.company.name
+      .toLowerCase()
+      .includes(searchValue.toLowerCase());
+    const matchCompanyCode = company.company.companyCode
+      .toString()
+      .includes(searchValue.toLowerCase());
+    const matchCEO = company.company.CEO.toLowerCase().includes(
+      searchValue.toLowerCase()
+    );
+    return matchCompanyCode || matchCEO || matchCompanyName;
+  });
+
   return (
     <div className="flex justify-end">
       <div className="flex w-[90%] flex-col">
         {APIstatus === "loading" ? (
           <div>Loading Company Details</div>
-        ) : companies.length > 0 ? (
-          companies.map((company, index) => {
+        ) : filteredCompanies.length > 0 ? (
+          filteredCompanies.map((company, index) => {
             return (
               <div
                 key={`company-${index}`}
@@ -64,7 +81,9 @@ export const CompanyDetail = () => {
             );
           })
         ) : (
-          <div>No Such Company Found.</div>
+          <div className="text-3xl text-center mt-8">
+            No Such Company Found.
+          </div>
         )}
       </div>
     </div>

@@ -1,10 +1,12 @@
 import logo from "../../logo.svg";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getAllCompanies } from "../../reducers/companyReducer";
 import { openModal, showContent } from "../../reducers/modalReducer";
+import { SearchBar } from "../Searchbar";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
+
   const openAddCompanyModal = () => {
     dispatch(openModal());
     dispatch(showContent("addCompanyModal"));
@@ -29,7 +31,7 @@ export const Navbar = () => {
           >
             list all company
           </button>
-          <div>search</div>
+          <SearchBar />
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   registerCompany,
   getAllCompanies,
@@ -75,10 +75,6 @@ export const AddCompanyModal = ({ closeModal }) => {
     e.preventDefault();
 
     const anyError = validateFormData();
-    // const form = e.target;
-    // const formData = new FormData(form);
-    // const formJson = Object.fromEntries(formData.entries());
-    // console.log(formJson);
 
     setErrorState(anyError);
 

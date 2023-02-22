@@ -10,6 +10,7 @@ const initialState = {
   deletingCompanyStatus: "idle",
   deletingCompanyErrorMsg: "",
   whichCompanyCodeToDelete: 0,
+  search: "",
 };
 
 export const getAllCompanies = createAsyncThunk(
@@ -52,6 +53,9 @@ export const companySlice = createSlice({
     updateDeletingCompanyCode: (state, action) => {
       state.whichCompanyCodeToDelete = action.payload;
     },
+    updateSearch: (state, action) => {
+      state.search = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -88,11 +92,13 @@ export const companySlice = createSlice({
   },
 });
 
-export const { updateDeletingCompanyCode } = companySlice.actions;
+export const { updateDeletingCompanyCode, updateSearch } = companySlice.actions;
 
 export const allCompanyDetails = (state) => state.companies.allCompanies;
 
 export const status = (state) => state.companies.status;
+
+export const getSearchValue = (state) => state.companies.search;
 
 export const getDeletingCompanyCode = (state) =>
   state.companies.whichCompanyCodeToDelete;
