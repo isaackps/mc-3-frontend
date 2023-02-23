@@ -52,6 +52,7 @@ export const CompanyDetail = () => {
                     <div className="w-1/2">
                       <div>Code: {company.company.companyCode}</div>
                       <div>{company.company.name}</div>
+                      <div>Stock: {company.company.stockExchange}</div>
                     </div>
                     <div className="w-1/2">
                       <div>CEO: {company.company.CEO}</div>

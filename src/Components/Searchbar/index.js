@@ -7,6 +7,7 @@ export const SearchBar = () => {
 
   return (
     <input
+      data-testid="searchBarInput"
       placeholder="Search"
       className="border px-2 rounded"
       type="text"

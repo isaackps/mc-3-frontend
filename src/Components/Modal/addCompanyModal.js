@@ -100,6 +100,7 @@ export const AddCompanyModal = ({ closeModal }) => {
         Company Code:
         <div className="ml-2 w-[70%]">
           <input
+            data-testid="companyCodeInput"
             className={`${
               errorState.companyCode.error
                 ? "border-2 border-red-500"
@@ -122,6 +123,7 @@ export const AddCompanyModal = ({ closeModal }) => {
       <label className="mt-2 flex justify-between">
         Company Name:
         <input
+          data-testid="companyNameInput"
           className="border ml-2 w-[70%] rounded px-2"
           type="text"
           value={companyName}
@@ -133,6 +135,7 @@ export const AddCompanyModal = ({ closeModal }) => {
       <label className="mt-2 flex justify-between">
         CEO:
         <input
+          data-testid="ceoInput"
           className="border ml-2 w-[70%] rounded px-2"
           type="text"
           value={ceo}
@@ -145,6 +148,7 @@ export const AddCompanyModal = ({ closeModal }) => {
         Turnover:
         <div className="ml-2 w-[70%]">
           <input
+            data-testid="turnoverInput"
             className={`${
               errorState.turnover.error ? "border-2 border-red-500" : "border"
             } w-full rounded px-2`}
@@ -164,6 +168,7 @@ export const AddCompanyModal = ({ closeModal }) => {
       <label className="mt-2 flex justify-between">
         Website:
         <input
+          data-testid="websiteInput"
           className="border ml-2 w-[70%] rounded px-2"
           type="text"
           value={website}
@@ -176,6 +181,7 @@ export const AddCompanyModal = ({ closeModal }) => {
         Stock Exchange:
         <div className="ml-2 w-[70%]">
           <input
+            data-testid="stockExchangeInput"
             className={`${
               errorState.stockExchange.error
                 ? "border-2 border-red-500"

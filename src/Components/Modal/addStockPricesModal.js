@@ -31,6 +31,7 @@ export const AddStockPricesModal = () => {
               //     ? "border-2 border-red-500"
               //     : "border"
               // } w-full rounded px-2`}
+              data-testid="stockPriceInput"
               className="border w-full rounded px-2"
               type="text"
               value={price}

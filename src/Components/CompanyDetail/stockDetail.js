@@ -99,7 +99,7 @@ export const StockDetails = ({ stocks }) => {
       ) : (
         <div className="flex flex-col items-center">
           <h3 className="text-center font-bold text-lg">
-            There are no stock Prices
+            There are no stock prices
           </h3>
           <button
             className="border shadow rounded px-2 my-2 cursor-pointer"
