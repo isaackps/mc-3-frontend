@@ -29,6 +29,9 @@ export const registerCompany = createAsyncThunk(
       await axios.post(`${endpointApiUrl}company/register`, companyDetail);
     } catch (err) {
       return rejectWithValue(err.response.data.message);
+    } finally {
+      const response = await axios.get(`${endpointApiUrl}company/getall`);
+      return response.data;
     }
   }
 );
@@ -77,8 +80,9 @@ export const companySlice = createSlice({
         state.registerCompanyStatus = "error";
         state.registerCompanyErrorMsg = action.payload;
       })
-      .addCase(registerCompany.fulfilled, (state) => {
+      .addCase(registerCompany.fulfilled, (state, action) => {
         state.registerCompanyStatus = "idle";
+        state.allCompanies = action.payload;
       })
       .addCase(deleteCompany.pending, (state) => {
         state.deletingCompanyStatus = "loading";

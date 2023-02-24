@@ -30,7 +30,7 @@ export const Navbar = () => {
       const firstCompanyName = companies[0].company.name;
       dispatch(selectCompany(firstCompanyName));
     }
-  });
+  }, [dispatch, companies]);
 
   return (
     <div className="navbar bg-base-100 flex">
@@ -53,6 +53,7 @@ export const Navbar = () => {
               className="border ml-2 rounded shadow"
               value={selectedCompany}
             >
+              <option value="none">Please select a company.</option>;
               {companies.map((company, i) => {
                 const companyName = company.company.name;
                 return (

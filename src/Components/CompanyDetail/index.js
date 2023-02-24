@@ -9,7 +9,7 @@ import {
 } from "../../reducers/companyReducer";
 import { StockDetails } from "./stockDetail";
 import { openModal, showContent } from "../../reducers/modalReducer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const CompanyDetail = () => {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ export const CompanyDetail = () => {
   const APIstatus = useSelector(status);
   const searchValue = useSelector(getSearchValue);
   const selectedCompany = useSelector(getSelectedCompany);
+  const [filteredCompanies, setFilteredCompanies] = useState([]);
 
   const openDeleteCompanyModal = (companyDetail) => {
     dispatch(updateDeletingCompanyCode(companyDetail.companyCode));
@@ -24,27 +25,33 @@ export const CompanyDetail = () => {
     dispatch(showContent("deleteCompanyModal"));
   };
 
-  const filteredCompanies = companies.filter((company) => {
-    if (selectedCompany && searchValue.length < 3)
-      return company.company.name === selectedCompany;
+  useEffect(() => {
+    setFilteredCompanies(
+      companies.filter((company) => {
+        if (selectedCompany && searchValue.length < 3)
+          return company.company.name === selectedCompany;
 
-    const matchCompanyName = company.company.name
-      .toLowerCase()
-      .includes(searchValue.toLowerCase());
-    const matchCompanyCode = company.company.companyCode
-      .toString()
-      .includes(searchValue.toLowerCase());
-    const matchCEO = company.company.CEO.toLowerCase().includes(
-      searchValue.toLowerCase()
+        const matchCompanyName = company.company.name
+          .toLowerCase()
+          .includes(searchValue.toLowerCase());
+        const matchCompanyCode = company.company.companyCode
+          .toString()
+          .includes(searchValue.toLowerCase());
+        const matchCEO = company.company.CEO.toLowerCase().includes(
+          searchValue.toLowerCase()
+        );
+
+        return matchCompanyCode || matchCEO || matchCompanyName;
+      })
     );
-
-    return matchCompanyCode || matchCEO || matchCompanyName;
-  });
+  }, [companies, searchValue, selectedCompany]);
 
   useEffect(() => {
-    console.log(filteredCompanies);
-    if (filteredCompanies.length > 0)
+    if (filteredCompanies.length > 0) {
       dispatch(selectCompany(filteredCompanies[0].company.name));
+    } else {
+      dispatch(selectCompany("none"));
+    }
   }, [dispatch, filteredCompanies]);
 
   return (
