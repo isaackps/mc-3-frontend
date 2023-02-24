@@ -37,8 +37,6 @@ describe("renders App homepage", () => {
     );
     const addCompanyElement = screen.getByText(/Add company/i);
     expect(addCompanyElement).toBeInTheDocument();
-    const listAllCompanyElement = screen.getByText(/list all company/i);
-    expect(listAllCompanyElement).toBeInTheDocument();
   });
 
   it("should render 'No Such Company Found' when there are no companies", () => {

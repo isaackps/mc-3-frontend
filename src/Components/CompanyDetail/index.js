@@ -4,15 +4,19 @@ import {
   getSearchValue,
   status,
   updateDeletingCompanyCode,
+  getSelectedCompany,
+  selectCompany,
 } from "../../reducers/companyReducer";
 import { StockDetails } from "./stockDetail";
 import { openModal, showContent } from "../../reducers/modalReducer";
+import { useEffect } from "react";
 
 export const CompanyDetail = () => {
   const dispatch = useDispatch();
   const companies = useSelector(allCompanyDetails);
   const APIstatus = useSelector(status);
   const searchValue = useSelector(getSearchValue);
+  const selectedCompany = useSelector(getSelectedCompany);
 
   const openDeleteCompanyModal = (companyDetail) => {
     dispatch(updateDeletingCompanyCode(companyDetail.companyCode));
@@ -21,7 +25,8 @@ export const CompanyDetail = () => {
   };
 
   const filteredCompanies = companies.filter((company) => {
-    if (searchValue.length < 3) return true;
+    if (selectedCompany && searchValue.length < 3)
+      return company.company.name === selectedCompany;
 
     const matchCompanyName = company.company.name
       .toLowerCase()
@@ -32,8 +37,15 @@ export const CompanyDetail = () => {
     const matchCEO = company.company.CEO.toLowerCase().includes(
       searchValue.toLowerCase()
     );
+
     return matchCompanyCode || matchCEO || matchCompanyName;
   });
+
+  useEffect(() => {
+    console.log(filteredCompanies);
+    if (filteredCompanies.length > 0)
+      dispatch(selectCompany(filteredCompanies[0].company.name));
+  }, [dispatch, filteredCompanies]);
 
   return (
     <div className="flex justify-end">
