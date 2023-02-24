@@ -15,6 +15,7 @@ The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
 _Note: need to run [backend](https://github.com/isaackps/mc-2-backend) on port 3001 for this frontend to work on localhost._
+_Note: backend will need to whitelist IP address on mongoDB before backend can work._
 
 ### `npm test`
 
