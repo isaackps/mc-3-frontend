@@ -14,6 +14,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
+_Note: need to run [backend](https://github.com/isaackps/mc-2-backend) on port 3001 for this frontend to work on localhost._
+
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
